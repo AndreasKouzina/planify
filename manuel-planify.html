@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manuel d'utilisation — Planify Kouzina</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0F2340;
+    --cream: #F7F3EC;
+    --gold: #C9A24B;
+    --text: #2A241C;
+    --muted: #64748B;
+    --border: #E8E1D5;
+    --white: #fff;
+    --blue: #3B82F6;
+    --green: #059669;
+    --red: #DC2626;
+    --purple: #7C3AED;
+    --amber: #D97706;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(180deg, #152a4a 0%, var(--navy) 100%);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 24px rgba(10,18,38,.3);
+  }
+  .header-logo {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #F4EFE3;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    color: rgba(244,239,227,.5);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 0;
+    min-height: calc(100vh - 120px);
+  }
+
+  /* ── SIDEBAR / TOC ── */
+  .sidebar {
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 120px;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+  .toc-title {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 20px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all .15s;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .toc-item:hover { background: var(--cream); color: var(--navy); border-left-color: var(--gold); }
+  .toc-item.active { background: var(--cream); color: var(--navy); border-left-color: var(--gold); font-weight: 700; }
+  .toc-icon { font-size: 14px; width: 20px; text-align: center; }
+
+  /* ── CONTENT ── */
+  .content {
+    padding: 40px 48px;
+    max-width: 760px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 56px;
+    scroll-margin-top: 140px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+  .section-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  p { margin-bottom: 14px; color: #374151; }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 700; font-size: 14px; color: var(--navy); margin-bottom: 3px; }
+  .step-desc { font-size: 13px; color: var(--muted); }
+
+  /* ── TIPS / CALLOUTS ── */
+  .tip {
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+  }
+  .tip-info { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
+  .tip-warn { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+  .tip-success { background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; }
+  .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .tip b { font-weight: 700; }
+
+  /* ── BADGES ── */
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid;
+  }
+  .badge-blue { background: #EFF6FF; color: #1E40AF; border-color: #BFDBFE; }
+  .badge-green { background: #ECFDF5; color: #065F46; border-color: #A7F3D0; }
+  .badge-red { background: #FEF2F2; color: #991B1B; border-color: #FCA5A5; }
+  .badge-amber { background: #FFFBEB; color: #92400E; border-color: #FDE68A; }
+  .badge-purple { background: #F5F3FF; color: #5B21B6; border-color: #DDD6FE; }
+  .badge-navy { background: #EFF6FF; color: var(--navy); border-color: #BFDBFE; }
+
+  /* ── URL BOX ── */
+  .url-box {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #6EE7B7;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .url-label { color: rgba(255,255,255,.4); font-size: 11px; margin-right: 4px; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  th { background: var(--navy); color: #fff; padding: 10px 14px; text-align: left; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+  th:first-child { border-radius: 8px 0 0 0; }
+  th:last-child { border-radius: 0 8px 0 0; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: #374151; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #FDFCFB; }
+
+  /* ── KEYBOARD ── */
+  kbd {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-family: monospace;
+    font-weight: 700;
+    color: var(--navy);
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  }
+
+  /* ── HERO CARD ── */
+  .hero-card {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a3a6b 100%);
+    border-radius: 16px;
+    padding: 28px 28px;
+    margin-bottom: 32px;
+    color: #fff;
+  }
+  .hero-card h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; margin-bottom: 10px; }
+  .hero-card p { color: rgba(255,255,255,.7); font-size: 14px; margin: 0; }
+  .hero-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 20px; }
+  .hero-stat { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 12px; text-align: center; }
+  .hero-stat-val { font-size: 26px; font-weight: 800; color: #C9A24B; }
+  .hero-stat-lbl { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 2px; font-weight: 600; }
+
+  /* ── FEATURE CARDS ── */
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .feature-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .feature-card-icon { font-size: 22px; margin-bottom: 8px; }
+  .feature-card-title { font-weight: 700; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
+  .feature-card-desc { font-size: 12px; color: var(--muted); }
+
+  /* ── MOBILE ONLY ── */
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .content { padding: 24px 20px; }
+    .hero-grid { grid-template-columns: 1fr 1fr; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .header { position: relative; top: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">PLANIFY</div>
+  <div class="header-sub">Manuel d'utilisation · Kouzina</div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="toc-title">Sommaire</div>
+    <a class="toc-item active" href="#intro"><span class="toc-icon">📖</span> Introduction</a>
+    <a class="toc-item" href="#acces"><span class="toc-icon">🔐</span> Accès & connexion</a>
+    <a class="toc-item" href="#journee"><span class="toc-icon">📅</span> Vue Journée</a>
+    <a class="toc-item" href="#semaine"><span class="toc-icon">📋</span> Vue Semaine</a>
+    <a class="toc-item" href="#rh"><span class="toc-icon">👥</span> Vue RH</a>
+    <a class="toc-item" href="#planning"><span class="toc-icon">➕</span> Ajouter au planning</a>
+    <a class="toc-item" href="#deplacer"><span class="toc-icon">↗️</span> Déplacer & retirer</a>
+    <a class="toc-item" href="#remplacer"><span class="toc-icon">🔄</span> Remplacements</a>
+    <a class="toc-item" href="#absences"><span class="toc-icon">🌴</span> Absences</a>
+    <a class="toc-item" href="#conges"><span class="toc-icon">📝</span> Demandes de congé</a>
+    <a class="toc-item" href="#evenements"><span class="toc-icon">🎪</span> Événements</a>
+    <a class="toc-item" href="#conflits"><span class="toc-icon">⚠️</span> Conflits</a>
+    <a class="toc-item" href="#sites"><span class="toc-icon">📍</span> Gérer les sites</a>
+    <a class="toc-item" href="#employes"><span class="toc-icon">👤</span> Gérer les employés</a>
+    <a class="toc-item" href="#rapports"><span class="toc-icon">📊</span> Rapports mensuels</a>
+    <a class="toc-item" href="#historique"><span class="toc-icon">🕓</span> Historique</a>
+    <a class="toc-item" href="#semaines-ab"><span class="toc-icon">🔁</span> Semaines A / B</a>
+    <a class="toc-item" href="#periode-essai"><span class="toc-icon">⏳</span> Période d'essai</a>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- INTRO -->
+    <section class="section" id="intro">
+      <div class="hero-card">
+        <h2>Bienvenue sur Planify</h2>
+        <p>L'outil de planning d'équipe conçu pour Kouzina — marchés, boutiques, laboratoire et événements au même endroit, synchronisé en temps réel entre tous les managers.</p>
+        <div class="hero-grid">
+          <div class="hero-stat"><div class="hero-stat-val">3</div><div class="hero-stat-lbl">Vues principales</div></div>
+          <div class="hero-stat"><div class="hero-stat-val">A/B</div><div class="hero-stat-lbl">Semaines alternées</div></div>
+          <div class="hero-stat"><div class="hero-stat-val">🔴</div><div class="hero-stat-lbl">Conflits en temps réel</div></div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-icon" style="background:#EFF6FF;">📖</div>
+        <div>
+          <div class="section-num">01</div>
+          <div class="section-title">Introduction</div>
+        </div>
+      </div>
+
+      <p>Planify est accessible depuis n'importe quel navigateur, sur ordinateur ou téléphone. Toutes les modifications sont synchronisées instantanément entre les managers.</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">📅</div>
+          <div class="feature-card-title">Vue Journée</div>
+          <div class="feature-card-desc">Qui travaille où aujourd'hui, par catégorie de site</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">📋</div>
+          <div class="feature-card-title">Vue Semaine</div>
+          <div class="feature-card-desc">Vue d'ensemble de la semaine entière, par catégorie</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">👥</div>
+          <div class="feature-card-title">Vue RH</div>
+          <div class="feature-card-desc">Statistiques mensuelles, absences et alertes par employé</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">⚙️</div>
+          <div class="feature-card-title">Paramètres</div>
+          <div class="feature-card-desc">Sites, employés, absences, rapports, historique</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCÈS -->
+    <section class="section" id="acces">
+      <div class="section-header">
+        <div class="section-icon" style="background:#F5F3FF;">🔐</div>
+        <div>
+          <div class="section-num">02</div>
+          <div class="section-title">Accès & connexion</div>
+        </div>
+      </div>
+
+      <p>Planify propose deux modes d'accès selon les profils :</p>
+
+      <table>
+        <tr><th>Profil</th><th>URL</th><th>Accès</th></tr>
+        <tr><td><strong>Manager</strong></td><td><code>andreaskouzina.github.io/planify</code></td><td>Code PIN demandé au chargement → accès complet</td></tr>
+        <tr><td><strong>Employé</strong></td><td><code>andreaskouzina.github.io/planify?mode=view</code></td><td>Lecture seule directe, sans PIN</td></tr>
+      </table>
+
+      <div class="tip tip-info">
+        <span class="tip-icon">💡</span>
+        <div><b>Premier accès :</b> si aucun PIN n'est encore défini, cliquez directement sur <b>Accéder</b> sans rien saisir. Configurez ensuite votre PIN dans ⚙️ → Accès & PIN manager.</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Ouvrir l'app</div>
+            <div class="step-desc">Rendez-vous sur l'URL manager depuis votre navigateur</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Saisir le PIN</div>
+            <div class="step-desc">Entrez le code à 4–6 chiffres configuré par votre équipe</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Accès complet</div>
+            <div class="step-desc">Toutes les fonctionnalités d'édition sont disponibles</div>
+          </div>
+        </div>
+      </div>
+
+      <p>Pour modifier le PIN : <strong>⚙️ → Accès & PIN manager</strong> → entrez le nouveau code → <strong>Enregistrer</strong>.</p>
+    </section>
+
+    <!-- JOURNÉE -->
+    <section class="section" id="journee">
+      <div class="section-header">
+        <div class="section-icon" style="background:#EFF6FF;">📅</div>
+        <div>
+          <div class="section-num">03</div>
+          <div class="section-title">Vue Journée</div>
+        </div>
+      </div>
+
+      <p>La vue Journée est l'écran principal. Elle affiche qui travaille où pour le jour sélectionné, organisé par catégorie de site.</p>
+
+      <p><strong>Naviguer entre les jours</strong> — utilisez la barre de jours en haut (Lun, Mar…). Un point rouge sous un jour indique un conflit. Vous pouvez changer de jour en restant dans la même catégorie.</p>
+
+      <p><strong>Écran d'accueil</strong> — trois indicateurs en haut (En poste / Absents / Conflits), puis les tuiles cliquables :</p>
+
+      <div class="badges">
+        <span class="badge badge-blue">🛒 Marchés</span>
+        <span class="badge badge-amber">🏪 Boutiques</span>
+        <span class="badge badge-green">🧑‍🍳 Laboratoire</span>
+        <span class="badge badge-purple">🎪 Événements</span>
+      </div>
+
+      <p>Chaque tuile affiche le nombre de sites ouverts, le nombre de personnes affectées et les avatars de l'équipe. Un badge rouge <span class="badge badge-red" style="font-size:11px;">⚠ 2</span> signale des conflits.</p>
+
+      <p><strong>Après avoir cliqué sur une catégorie</strong>, vous voyez les sites ouverts ce jour avec pour chaque site :</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">👤</div>
+          <div class="step-content">
+            <div class="step-title">Nom + horaires</div>
+            <div class="step-desc">Le prénom de chaque employé avec ses horaires (ex: 07:00–14:00)</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">⋮</div>
+          <div class="step-content">
+            <div class="step-title">Menu action</div>
+            <div class="step-desc">Cliquez sur ⋮ à droite d'un employé pour le déplacer ou le retirer</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">+</div>
+          <div class="step-content">
+            <div class="step-title">Ajouter quelqu'un</div>
+            <div class="step-desc">Bouton "+ Ajouter" en bas de chaque site pour affecter un employé</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip tip-success">
+        <span class="tip-icon">✅</span>
+        <div><b>Absent remplacé :</b> un employé absent apparaît barré en rouge, son remplaçant s'affiche en dessous avec ↳ en vert.</div>
+      </div>
+    </section>
+
+    <!-- SEMAINE -->
+    <section class="section" id="semaine">
+      <div class="section-header">
+        <div class="section-icon" style="background:#ECFDF5;">📋</div>
+        <div>
+          <div class="section-num">04</div>
+          <div class="section-title">Vue Semaine</div>
+        </div>
+      </div>
+
+      <p>La vue Semaine donne une vision complète des 7 jours, organisée de la même façon que la vue Journée — par catégorie de site.</p>
+
+      <p><strong>Navigation</strong> — utilisez les boutons ‹ › dans le header navy pour changer de semaine. Le bouton <kbd>Auj.</kbd> revient à la semaine en cours. Le type de semaine (A ou B) est affiché.</p>
+
+      <p><strong>Tuiles catégories</strong> — cliquez sur Marchés, Boutiques, Laboratoire ou Événements pour voir le détail de la semaine pour cette catégorie.</p>
+
+      <p><strong>Vue détail</strong> — chaque jour de la semaine est listé verticalement. Pour chaque jour :</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">📅</div>
+          <div class="step-content">
+            <div class="step-title">Date et site</div>
+            <div class="step-desc">Le jour avec sa date, le nom du site et les horaires</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">👤</div>
+          <div class="step-content">
+            <div class="step-title">Employés avec horaires</div>
+            <div class="step-desc">Chaque personne affectée avec ses horaires individuels</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">⋮</div>
+          <div class="step-content">
+            <div class="step-title">Actions</div>
+            <div class="step-desc">Bouton ⋮ pour déplacer ou retirer, bouton + pour ajouter</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RH -->
+    <section class="section" id="rh">
+      <div class="section-header">
+        <div class="section-icon" style="background:#FFF7ED;">👥</div>
+        <div>
+          <div class="section-num">05</div>
+          <div class="section-title">Vue RH</div>
+        </div>
+      </div>
+
+      <p>La vue RH remplace l'ancienne vue Équipe. Elle affiche les statistiques mensuelles de chaque employé et les alertes importantes.</p>
+
+      <p><strong>Navigation mensuelle</strong> — utilisez ‹ › en haut à droite pour changer de mois.</p>
+
+      <p><strong>Carte employé</strong> — chaque employé est présenté avec :</p>
+
+      <table>
+        <tr><th>Indicateur</th><th>Description</th></tr>
+        <tr><td>📅 Jours travaillés</td><td>Nombre de jours effectivement travaillés ce mois / jours prévus</td></tr>
+        <tr><td>⏱️ Heures</td><td>Total des heures travaillées (calculé depuis les horaires)</td></tr>
+        <tr><td>🌴 Absences</td><td>Nombre de jours d'absence sur jours planifiés, avec détail par type</td></tr>
+        <tr><td>🏪 Site principal</td><td>Le site où il/elle travaille le plus ce mois</td></tr>
+        <tr><td>📅 Prochaine absence</td><td>Date et type de la prochaine absence prévue</td></tr>
+      </table>
+
+      <div class="tip tip-warn">
+        <span class="tip-icon">⚠️</span>
+        <div><b>Alertes période d'essai :</b><br>
+        🟡 <b>Orange</b> — moins de 30 jours restants<br>
+        🔴 <b>Rouge</b> — moins de 14 jours restants<br>
+        🔴 <b>Rouge</b> — période expirée, à confirmer</div>
+      </div>
+    </section>
+
+    <!-- PLANNING -->
+    <section class="section" id="planning">
+      <div class="section-header">
+        <div class="section-icon" style="background:#ECFDF5;">➕</div>
+        <div>
+          <div class="section-num">06</div>
+          <div class="section-title">Ajouter au planning</div>
+        </div>
+      </div>
+
+      <p>Pour affecter un employé à un site :</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Accéder au site</div>
+            <div class="step-desc">Vue Journée ou Semaine → catégorie → site souhaité</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Cliquer sur + Ajouter</div>
+            <div class="step-desc">Bouton en bas de la carte du site</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Choisir l'employé et les horaires</div>
+            <div class="step-desc">Sélectionnez la personne, ajustez les horaires si besoin</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Choisir la récurrence</div>
+            <div class="step-desc">Tous les [jour] de semaine A, B ou les deux — ou ponctuel (une seule date)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip tip-info">
+        <span class="tip-icon">💡</span>
+        <div>Les employés n'ont pas de site fixe dans Planify. Chaque affectation est liée à un jour de la semaine avec une récurrence. Vous pouvez affecter quelqu'un à plusieurs sites différents.</div>
+      </div>
+    </section>
+
+    <!-- DÉPLACER -->
+    <section class="section" id="deplacer">
+      <div class="section-header">
+        <div class="section-icon" style="background:#FFFBEB;">↗️</div>
+        <div>
+          <div class="section-num">07</div>
+          <div class="section-title">Déplacer & retirer</div>
+        </div>
+      </div>
+
+      <p>Pour modifier l'affectation d'un employé, cliquez sur le bouton <strong>⋮</strong> à droite de son nom dans la vue Journée ou Semaine.</p>
+
+      <p>Un menu s'ouvre avec deux actions :</p>
+
+      <table>
+        <tr><th>Action</th><th>Ponctuel 📌</th><th>Permanent 🔁</th></tr>
+        <tr><td><strong>↗ Déplacer</strong></td><td>Change le site uniquement pour cette date. Les autres semaines restent intactes.</td><td>Change le site pour tous les futurs créneaux de ce jour.</td></tr>
+        <tr><td><strong>✕ Retirer</strong></td><td>Retire l'employé uniquement ce jour. Les autres semaines restent.</td><td>Supprime définitivement l'affectation pour ce jour.</td></tr>
+      </table>
+
+      <div class="tip tip-warn">
+        <span class="tip-icon">⚠️</span>
+        <div><b>Lors d'un déplacement</b>, vous pouvez choisir le site cible et modifier les horaires. Les horaires du nouveau site sont pré-remplis automatiquement.</div>
+      </div>
+    </section>
+
+    <!-- REMPLACER -->
+    <section class="section" id="remplacer">
+      <div class="section-header">
+        <div class="section-icon" style="background:#ECFDF5;">🔄</div>
+        <div>
+          <div class="section-num">08</div>
+          <div class="section-title">Remplacements</div>
+        </div>
+      </div>
+
+      <p>Quand un employé est absent et qu'il était planifié sur un site, un conflit est automatiquement détecté. Planify propose des remplaçants disponibles.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Conflit détecté</div>
+            <div class="step-desc">L'employé absent apparaît barré en rouge avec un badge ⚠️. Un bouton "↳ Programmer un remplacement" apparaît.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Choisir le remplaçant</div>
+            <div class="step-desc">Depuis la vue RH ou en cliquant sur le conflit — Planify propose les employés disponibles (pas absents, pas déjà affectés à ce créneau).</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Confirmation</div>
+            <div class="step-desc">Le remplaçant est affiché en vert ↳ sous l'absent barré.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip tip-info">
+        <span class="tip-icon">💡</span>
+        <div>Planify anticipe les conflits sur <b>6 mois</b> à l'avance. Le badge <span class="badge badge-red" style="font-size:11px;">⚠ 4</span> dans le header indique le nombre total de conflits à venir.</div>
+      </div>
+    </section>
+
+    <!-- ABSENCES -->
+    <section class="section" id="absences">
+      <div class="section-header">
+        <div class="section-icon" style="background:#FFFBEB;">🌴</div>
+        <div>
+          <div class="section-num">09</div>
+          <div class="section-title">Absences</div>
+        </div>
+      </div>
+
+      <p>Les absences se déclarent dans <strong>⚙️ → Absences</strong>. Chaque employé peut avoir plusieurs absences de types différents.</p>
+
+      <div class="badges">
+        <span class="badge badge-amber">🌴 CP — Congés payés</span>
+        <span class="badge badge-blue">🏠 RTT</span>
+        <span class="badge badge-red">🤒 Maladie</span>
+        <span class="badge badge-navy">📅 Sans solde</span>
+        <span class="badge badge-purple">⭐ Autre</span>
+      </div>
+
+      <p>Deux modes de saisie :</p>
+
+      <table>
+        <tr><th>Mode</th><th>Usage</th><th>Exemple</th></tr>
+        <tr><td><strong>Période</strong></td><td>Dates précises de début et fin</td><td>Du 14/07 au 21/07</td></tr>
+        <tr><td><strong>Récurrent</strong></td><td>Un jour de la semaine qui revient</td><td>Tous les mercredis — sem. A</td></tr>
+      </table>
+
+      <div class="tip tip-success">
+        <span class="tip-icon">✅</span>
+        <div>Les absences passées ne s'affichent plus dans la liste — seulement le mois en cours et les absences futures. L'historique complet reste accessible dans les <b>Rapports mensuels</b>.</div>
+      </div>
+
+      <div class="tip tip-info">
+        <span class="tip-icon">💡</span>
+        <div>Les absences ne sont comptées dans les rapports que sur les <b>jours où l'employé était planifié</b>. Si Hugo est absent un samedi mais ne travaille jamais le samedi, ce jour ne compte pas.</div>
+      </div>
+    </section>
+
+    <!-- CONGÉS -->
+    <section class="section" id="conges">
+      <div class="section-header">
+        <div class="section-icon" style="background:#F0FDF4;">📝</div>
+        <div>
+          <div class="section-num">10</div>
+          <div class="section-title">Demandes de congé</div>
+        </div>
+      </div>
+
+      <p>Les employés peuvent soumettre des demandes de congé depuis le mode lecture, sans accès manager.</p>
+
+      <p><strong>Côté employé (URL ?mode=view) :</strong></p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">S'identifier</div>
+            <div class="step-desc">Cliquer sur "👤 Je suis…" en haut → choisir son nom dans la liste</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Demander un congé</div>
+            <div class="step-desc">Bouton doré flottant "📝 Demander un congé" → choisir le type, les dates, ajouter une note optionnelle</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Envoi</div>
+            <div class="step-desc">La demande est envoyée et apparaît immédiatement chez le manager</div>
+          </div>
+        </div>
+      </div>
+
+      <p><strong>Côté manager :</strong></p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">📋</div>
+          <div class="step-content">
+            <div class="step-title">Badge orange dans le header</div>
+            <div class="step-desc">Le nombre de demandes en attente s'affiche en orange à côté de ⚙️</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">⚙️</div>
+          <div class="step-content">
+            <div class="step-title">⚙️ → Demandes de congé</div>
+            <div class="step-desc">Voir le détail : nom, type, dates, note de l'employé</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">✓✕</div>
+          <div class="step-content">
+            <div class="step-title">Accepter ou Refuser</div>
+            <div class="step-desc">✓ Accepter → l'absence est créée automatiquement dans le planning. ✕ Refuser → archivé.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ÉVÉNEMENTS -->
+    <section class="section" id="evenements">
+      <div class="section-header">
+        <div class="section-icon" style="background:#F5F3FF;">🎪</div>
+        <div>
+          <div class="section-num">11</div>
+          <div class="section-title">Événements (catering, mariages…)</div>
+        </div>
+      </div>
+
+      <p>La catégorie Événements permet de gérer les prestations extérieures : mariages, catering, festivals, etc.</p>
+
+      <p><strong>Créer un événement</strong> — depuis la tuile 🎪 Événements (vue Journée ou Semaine) → bouton <strong>+ Créer</strong> :</p>
+
+      <table>
+        <tr><th>Champ</th><th>Description</th></tr>
+        <tr><td>📛 Nom</td><td>Nom de l'événement (ex: Mariage Dupont)</td></tr>
+        <tr><td>📅 Dates</td><td>Date de début et de fin (peut durer plusieurs jours)</td></tr>
+        <tr><td>📍 Adresse</td><td>Lieu de la prestation</td></tr>
+        <tr><td>💬 Commentaire</td><td>Notes utiles : contact client, matériel, instructions</td></tr>
+        <tr><td>👤 Personnel</td><td>Employés affectés avec leurs horaires individuels</td></tr>
+      </table>
+
+      <div class="tip tip-info">
+        <span class="tip-icon">💡</span>
+        <div>Les événements apparaissent dans la <b>vue Journée</b> (tuile violette) et dans la <b>vue Semaine</b>. Vous pouvez les modifier ou les supprimer à tout moment.</div>
+      </div>
+    </section>
+
+    <!-- CONFLITS -->
+    <section class="section" id="conflits">
+      <div class="section-header">
+        <div class="section-icon" style="background:#FEF2F2;">⚠️</div>
+        <div>
+          <div class="section-num">12</div>
+          <div class="section-title">Conflits</div>
+        </div>
+      </div>
+
+      <p>Un conflit se produit quand un employé est planifié sur un site mais qu'il est également en absence ce jour-là.</p>
+
+      <p><strong>Où voir les conflits :</strong></p>
+      <div class="badges">
+        <span class="badge badge-red">⚠ 4 dans le header</span>
+        <span class="badge badge-red">Point rouge sur le jour</span>
+        <span class="badge badge-red">Carte rouge dans les sites</span>
+        <span class="badge badge-red">Banner rouge en vue RH</span>
+      </div>
+
+      <p>Planify détecte les conflits sur <strong>6 mois</strong> à l'avance. Dès qu'une absence est déclarée, tous les conflits correspondants sont identifiés automatiquement.</p>
+
+      <div class="tip tip-warn">
+        <span class="tip-icon">⚠️</span>
+        <div>Le filtre horaire est intelligent : si quelqu'un travaille matin (7h–14h) et qu'un autre travaille après-midi (14h–21h) sur le même site, ils ne sont pas en conflit et le remplaçant de l'un ne doit pas forcément être disponible sur les mêmes horaires.</div>
+      </div>
+    </section>
+
+    <!-- SITES -->
+    <section class="section" id="sites">
+      <div class="section-header">
+        <div class="section-icon" style="background:#EFF6FF;">📍</div>
+        <div>
+          <div class="section-num">13</div>
+          <div class="section-title">Gérer les sites</div>
+        </div>
+      </div>
+
+      <p>Accès : <strong>⚙️ → Points de vente</strong></p>
+
+      <p>Pour chaque site, vous pouvez configurer :</p>
+      <table>
+        <tr><th>Paramètre</th><th>Description</th></tr>
+        <tr><td>Nom & abréviation</td><td>Nom complet et court (ex: "Bourg-la-Reine" / "BLR")</td></tr>
+        <tr><td>Catégorie</td><td>Marché, Boutique ou Laboratoire</td></tr>
+        <tr><td>Couleur</td><td>Couleur de la carte dans l'interface</td></tr>
+        <tr><td>Jours d'ouverture</td><td>Quels jours de la semaine le site est ouvert</td></tr>
+        <tr><td>Horaires</td><td>Heure d'ouverture et de fermeture par défaut</td></tr>
+      </table>
+    </section>
+
+    <!-- EMPLOYÉS -->
+    <section class="section" id="employes">
+      <div class="section-header">
+        <div class="section-icon" style="background:#F0FDF4;">👤</div>
+        <div>
+          <div class="section-num">14</div>
+          <div class="section-title">Gérer les employés</div>
+        </div>
+      </div>
+
+      <p>Accès : <strong>⚙️ → Employés</strong></p>
+
+      <table>
+        <tr><th>Champ</th><th>Description</th></tr>
+        <tr><td>Nom & initiales</td><td>Affiché sur les cartes et dans les plannings</td></tr>
+        <tr><td>Couleur</td><td>Couleur de la bulle d'avatar</td></tr>
+        <tr><td>Rôle</td><td>Vente, Cuisine, Polyvalent…</td></tr>
+        <tr><td>Date de début</td><td>Déclenche le calcul de la période d'essai</td></tr>
+        <tr><td>Période renouvelée</td><td>Passe la période d'essai de 60 à 120 jours</td></tr>
+        <tr><td>Confirmé en poste</td><td>Désactive l'alerte période d'essai</td></tr>
+      </table>
+
+      <div class="tip tip-info">
+        <span class="tip-icon">💡</span>
+        <div>Les employés n'ont <b>pas de site fixe</b> dans Planify. Leurs affectations sont gérées directement dans le planning (vue Journée ou Semaine).</div>
+      </div>
+    </section>
+
+    <!-- RAPPORTS -->
+    <section class="section" id="rapports">
+      <div class="section-header">
+        <div class="section-icon" style="background:#FFFBEB;">📊</div>
+        <div>
+          <div class="section-num">15</div>
+          <div class="section-title">Rapports mensuels</div>
+        </div>
+      </div>
+
+      <p>Accès : <strong>⚙️ → Rapports mensuels</strong></p>
+
+      <p>Pour chaque employé et chaque mois, le rapport affiche :</p>
+      <div class="badges">
+        <span class="badge badge-navy">📅 Jours travaillés</span>
+        <span class="badge badge-navy">⏱️ Heures totales</span>
+        <span class="badge badge-navy">🏪 Répartition par site</span>
+        <span class="badge badge-amber">🌴 Absences par type</span>
+        <span class="badge badge-amber">📋 Détail des périodes</span>
+      </div>
+
+      <div class="tip tip-success">
+        <span class="tip-icon">✅</span>
+        <div>Les absences ne sont comptées que sur les <b>jours effectivement planifiés</b>. Un jour de repos non planifié ne compte pas comme absence.</div>
+      </div>
+    </section>
+
+    <!-- HISTORIQUE -->
+    <section class="section" id="historique">
+      <div class="section-header">
+        <div class="section-icon" style="background:#F8F7F3;">🕓</div>
+        <div>
+          <div class="section-num">16</div>
+          <div class="section-title">Historique</div>
+        </div>
+      </div>
+
+      <p>Accès : <strong>⚙️ → Historique</strong></p>
+
+      <p>Toutes les actions effectuées dans l'app sont enregistrées avec leur horodatage : affectations, déplacements, absences, décisions sur les demandes de congé…</p>
+
+      <p>Les 300 dernières actions sont conservées. L'historique est partagé entre tous les managers.</p>
+    </section>
+
+    <!-- SEMAINES A/B -->
+    <section class="section" id="semaines-ab">
+      <div class="section-header">
+        <div class="section-icon" style="background:#F5F3FF;">🔁</div>
+        <div>
+          <div class="section-num">17</div>
+          <div class="section-title">Semaines A / B</div>
+        </div>
+      </div>
+
+      <p>Planify gère un planning en alternance semaine A / semaine B. Le type de la semaine actuelle est affiché dans le header (<span class="badge badge-green">S.A</span> ou <span class="badge badge-purple">S.B</span>).</p>
+
+      <p>Lors de l'affectation d'un employé, vous choisissez :</p>
+      <div class="badges">
+        <span class="badge badge-green">Semaine A seulement</span>
+        <span class="badge badge-purple">Semaine B seulement</span>
+        <span class="badge badge-navy">Les deux semaines</span>
+      </div>
+
+      <p>Un badge <span class="badge badge-amber" style="font-size:11px;">📌</span> signale une affectation ponctuelle (une date unique). Un badge <span class="badge badge-purple" style="font-size:11px;">S.A</span> indique que l'affectation ne s'applique qu'en semaine A.</p>
+    </section>
+
+    <!-- PÉRIODE D'ESSAI -->
+    <section class="section" id="periode-essai">
+      <div class="section-header">
+        <div class="section-icon" style="background:#FEF2F2;">⏳</div>
+        <div>
+          <div class="section-num">18</div>
+          <div class="section-title">Période d'essai</div>
+        </div>
+      </div>
+
+      <p>Si une date de début est renseignée pour un employé, Planify calcule automatiquement sa période d'essai et affiche des alertes visuelles sur sa carte RH.</p>
+
+      <table>
+        <tr><th>Durée</th><th>Condition</th><th>Alerte</th></tr>
+        <tr><td>J + 60 jours</td><td>Période initiale</td><td>🟡 Orange si &lt; 30j restants</td></tr>
+        <tr><td>J + 120 jours</td><td>Période renouvelée (case ☑️)</td><td>🔴 Rouge si &lt; 14j restants</td></tr>
+        <tr><td>—</td><td>Confirmé en poste (case ☑️)</td><td>Aucune alerte</td></tr>
+      </table>
+
+      <p>Pour modifier : <strong>⚙️ → Employés → [nom] → cocher Période renouvelée ou Confirmé en poste</strong></p>
+
+      <div class="tip tip-success">
+        <span class="tip-icon">✅</span>
+        <div>Dès qu'un employé est <b>Confirmé en poste</b>, l'alerte disparaît définitivement de la vue RH.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Active TOC item on scroll
+  const sections = document.querySelectorAll('.section');
+  const tocItems = document.querySelectorAll('.toc-item');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tocItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
